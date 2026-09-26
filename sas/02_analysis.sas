@@ -1,0 +1,15 @@
+proc freq data=Attrition;
+tables Attrition*Department/chisq;
+run;
+Proc freq data=Attrition;
+tables OverTime*Attrition/chisq;
+run;
+proc freq data=Attrition;
+tables JobSatisfaction*Attrition/chisq;
+run;
+proc freq data=Attrition;
+tables MaritalStatus*Attrition/chisq;
+run;
+proc freq data=Attrition;
+tables BusinessTravel*Attrition/chisq;
+run;
