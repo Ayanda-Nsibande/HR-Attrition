@@ -55,7 +55,7 @@ ggplot(df, aes(x = YearsAtCompany, fill = Attrition)) +
 
 library(e1071) # for skewness
 
-# Check the number
+#SKEWNESS OF DATA
 skewness(df$MonthlyIncome)
 skewness(df$Age)
 
@@ -64,6 +64,7 @@ ggplot(df, aes(x = MonthlyIncome)) +
   geom_density(color="red", linewidth=1) +
   labs(title = "Monthly Income Distribution - Right Skewed")
 
+#T-STATISTIC TEST 
 t.test(MonthlyIncome ~ Attrition, data = df)
 summary(df$Age)
 sd(df$MonthlyIncome)
