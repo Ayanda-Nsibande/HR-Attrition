@@ -1,1 +1,75 @@
+library(readxl)
+library(tidyverse)
+library(janitor)
+df <- read_csv(file.choose())
+
+# Chart 1
+ggplot(df, aes(x = Attrition, fill = Attrition)) +
+  geom_bar() +
+  geom_text(stat = "count", aes(label = after_stat(count)), vjust = -0.5) +
+  labs(title = "Employees: Left vs Stayed", x = "Attrition", y = "Count") +
+  theme_minimal()
+
+# Chart 2
+ggplot(df, aes(x = Department, fill = Attrition)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Attrition by Department", x = "Department", y = "Count") +
+  theme_minimal()
+
+# Chart 3
+ggplot(df, aes(x = OverTime, fill = Attrition)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Attrition by Overtime", x = "Overtime", y = "Count") +
+  theme_minimal()
+
+# Chart 4
+ggplot(df, aes(x = Age, fill = Attrition)) +
+  geom_histogram(bins = 20, position = "identity", alpha = 0.6) +
+  labs(title = "Age Distribution by Attrition", x = "Age", y = "Count") +
+  theme_minimal()
+
+# Chart 5
+ggplot(df, aes(x = Attrition, y = MonthlyIncome, fill = Attrition)) +
+  geom_boxplot() +
+  labs(title = "Monthly Income: Leavers vs Stayers",
+       x = "Attrition", y = "Monthly Income") +
+  theme_minimal()
+
+# Chart 6
+df %>%
+  group_by(JobRole) %>%
+  summarise(rate = mean(Attrition == "Yes") * 100, .groups = "drop") %>%
+  ggplot(aes(x = reorder(JobRole, rate), y = rate, fill = rate)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Attrition Rate by Job Role (%)",
+       x = "Job Role", y = "Attrition Rate (%)") +
+  theme_minimal()
+
+# Chart 7
+ggplot(df, aes(x = YearsAtCompany, fill = Attrition)) +
+  geom_histogram(bins = 20, position = "identity", alpha = 0.6) +
+  labs(title = "Years at Company by Attrition",
+       x = "Years at Company", y = "Count") +
+  theme_minimal()
+
+library(e1071) # for skewness
+
+# Check the number
+skewness(df$MonthlyIncome)
+skewness(df$Age)
+
+ggplot(df, aes(x = MonthlyIncome)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 30, fill = "skyblue", color="white") +
+  geom_density(color="red", linewidth=1) +
+  labs(title = "Monthly Income Distribution - Right Skewed")
+
+t.test(MonthlyIncome ~ Attrition, data = df)
+summary(df$Age)
+sd(df$MonthlyIncome)
+cor(df$Age, df$MonthlyIncome)
+
+tab<-table(df$OverTime,df$Attrition)
+tab
+chisq.test(tab)
 
